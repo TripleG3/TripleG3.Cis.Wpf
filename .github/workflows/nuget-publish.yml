@@ -63,8 +63,15 @@ jobs:
           /p:ContinuousIntegrationBuild=true
 
       - name: Publish NuGet package
-        run: >-
-          dotnet nuget push ${{ env.PACKAGE_OUTPUT_PATH }}/*.nupkg
-          --api-key "${{ secrets.NUGET_API_KEY }}"
-          --source https://api.nuget.org/v3/index.json
-          --skip-duplicate
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          $packages = @(Get-ChildItem -Path "${{ env.PACKAGE_OUTPUT_PATH }}" -Filter "*.nupkg" -File)
+          if ($packages.Count -eq 0) {
+            throw "No NuGet packages found in '${{ env.PACKAGE_OUTPUT_PATH }}'."
+          }
+
+          foreach ($package in $packages) {
+            $packagePath = $package.FullName
+            dotnet nuget push $packagePath --api-key $env:NUGET_API_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate
+          }
