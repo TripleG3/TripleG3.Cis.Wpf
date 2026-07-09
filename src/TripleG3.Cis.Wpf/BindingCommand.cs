@@ -5,7 +5,7 @@ namespace TripleG3.Cis.Wpf;
 
 /// <summary>
 /// A lightweight <see cref="ICommand"/> implementation that wires <see cref="CanExecuteChanged"/>
-/// to an <see cref="INotifyPropertyChanged"/> source. Useful for MVVM command bindings in .NET MAUI.
+/// to an <see cref="INotifyPropertyChanged"/> source. Useful for MVVM command bindings in WPF.
 /// Supports both parameterless and parameterized delegates.
 /// </summary>
 public class BindingCommand : ICommand
@@ -27,7 +27,7 @@ public class BindingCommand : ICommand
     /// <param name="canExecute">A function that determines whether the command can execute.</param>
     /// <param name="notifyPropertyChanged">The notifier whose <see cref="INotifyPropertyChanged.PropertyChanged"/> raises <see cref="CanExecuteChanged"/>.</param>
     public BindingCommand(Action execute, Func<bool> canExecute, INotifyPropertyChanged notifyPropertyChanged)
-        : this(x => execute(), x => canExecute(), notifyPropertyChanged) { }
+        : this(_ => execute(), _ => canExecute(), notifyPropertyChanged) { }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BindingCommand"/> class using parameterized delegates.
@@ -40,7 +40,7 @@ public class BindingCommand : ICommand
     {
         _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
-        notifyPropertyChanged.PropertyChanged += (s, e) => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        notifyPropertyChanged.PropertyChanged += (_, _) => OnCanExecuteChanged();
     }
 
     /// <summary>

@@ -7,5 +7,5 @@ namespace TripleG3.Cis.Wpf;
 /// </summary>
 /// <typeparam name="T">The type of the command parameter.</typeparam>
 public class BindingCommand<T>(Action<T?> execute, Func<T?, bool> canExecute, INotifyPropertyChanged notifyPropertyChanged)
-    : BindingCommand(x => execute((T?)x), x => canExecute((T?)x), notifyPropertyChanged)
+    : BindingCommand(parameter => execute((T?)parameter), parameter => canExecute((T?)parameter), notifyPropertyChanged)
 { }
