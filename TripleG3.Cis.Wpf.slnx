@@ -1,3 +1,5 @@
 <Solution>
+  <Folder Name="/tests/" />
   <Project Path="src/TripleG3.Cis.Wpf/TripleG3.Cis.Wpf.csproj" />
+  <Project Path="tests/TripleG3.Cis.Wpf.Tests/TripleG3.Cis.Wpf.Tests.csproj" />
 </Solution>
